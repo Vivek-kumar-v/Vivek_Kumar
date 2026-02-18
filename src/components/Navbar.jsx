@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 
 export default function Navbar({ darkMode, setDarkMode }) {
   const [scrolled, setScrolled] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [, setMenuOpen] = useState(false);
+
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 20);
