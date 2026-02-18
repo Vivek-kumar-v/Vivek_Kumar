@@ -29,16 +29,19 @@ function ProjectCard({ p, darkMode, delay }) {
             ? "scale(1.018) translateY(-5px)"
             : "scale(1) translateY(0)",
           transition: "all 0.3s cubic-bezier(0.4,0,0.2,1)",
+
+          // ✅ IMPORTANT: card should NOT look clickable
+          cursor: "default",
         }}
       >
-        {/* Gradient background (FIXED) */}
+        {/* Gradient background (DO NOT BLOCK CLICKS) */}
         <div
           style={{
             position: "absolute",
             inset: 0,
             background: p.gradient,
             borderRadius: 28,
-            pointerEvents: "none", // ✅ IMPORTANT
+            pointerEvents: "none", // ✅ FIX
           }}
         />
 
@@ -54,6 +57,7 @@ function ProjectCard({ p, darkMode, delay }) {
           >
             <div>
               <div style={{ fontSize: 38, marginBottom: 10 }}>{p.icon}</div>
+
               <h3
                 style={{
                   fontSize: 21,
@@ -64,6 +68,7 @@ function ProjectCard({ p, darkMode, delay }) {
               >
                 {p.title}
               </h3>
+
               <p
                 style={{
                   fontSize: 13,
@@ -143,6 +148,7 @@ function ProjectCard({ p, darkMode, delay }) {
                 href={p.live}
                 target="_blank"
                 rel="noreferrer"
+                onClick={(e) => e.stopPropagation()} // ✅ FIX
                 style={{
                   flex: 1,
                   textAlign: "center",
@@ -173,6 +179,7 @@ function ProjectCard({ p, darkMode, delay }) {
                 href={p.source}
                 target="_blank"
                 rel="noreferrer"
+                onClick={(e) => e.stopPropagation()} // ✅ FIX
                 style={{
                   flex: 1,
                   textAlign: "center",
