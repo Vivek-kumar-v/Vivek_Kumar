@@ -6,7 +6,7 @@ const GREETINGS = [
   { text: "नमस्ते 🙏", lang: "Hindi" },
   { text: "Hola 👋", lang: "Spanish" },
   { text: "Bonjour 👋", lang: "French" },
-  { text: "こんにちは 👋", lang: "Japanese" },
+  { text: "こんにちは 👋", lang: "Japanese" }, // ✅ fixed Japanese text
   { text: "안녕하세요 👋", lang: "Korean" },
 ];
 
@@ -18,9 +18,22 @@ const PHOTOS = [
 export default function Hero({ darkMode }) {
   const [gi, setGi] = useState(0);
   const [fade, setFade] = useState(true);
+
   const [photoIndex, setPhotoIndex] = useState(0);
   const [photoFade, setPhotoFade] = useState(true);
+
+  // ✅ Safe mobile check
+  const [isMobile, setIsMobile] = useState(() =>
+    typeof window !== "undefined" ? window.innerWidth < 768 : false
+  );
+
   const t = darkMode;
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   // Greeting rotation
   useEffect(() => {
@@ -31,10 +44,11 @@ export default function Hero({ darkMode }) {
         setFade(true);
       }, 280);
     }, 2000);
+
     return () => clearInterval(interval);
   }, []);
 
-  // Photo cycling every 3 seconds
+  // Photo cycling
   useEffect(() => {
     const interval = setInterval(() => {
       setPhotoFade(false);
@@ -43,6 +57,7 @@ export default function Hero({ darkMode }) {
         setPhotoFade(true);
       }, 400);
     }, 3000);
+
     return () => clearInterval(interval);
   }, []);
 
@@ -53,26 +68,44 @@ export default function Hero({ darkMode }) {
         minHeight: "100vh",
         display: "flex",
         alignItems: "center",
-        padding: "110px 24px 70px",
+        padding: isMobile ? "100px 20px 60px" : "110px 24px 70px",
       }}
     >
       <div style={{ maxWidth: 1100, margin: "0 auto", width: "100%" }}>
         <div
           style={{
-            display: "grid",
-            gridTemplateColumns: "1fr auto",
-            gap: 64,
+            display: "flex",
+            flexDirection: isMobile ? "column" : "row",
+            gap: isMobile ? 40 : 64,
             alignItems: "center",
           }}
         >
+          {/* Photo (top on mobile) */}
+          {isMobile && (
+            <PhotoBlock
+              photoIndex={photoIndex}
+              photoFade={photoFade}
+              t={t}
+              isMobile={isMobile}
+            />
+          )}
+
           {/* Left content */}
-          <div style={{ display: "flex", flexDirection: "column", gap: 26 }}>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: isMobile ? 20 : 26,
+              flex: 1,
+              width: "100%",
+            }}
+          >
             {/* Animated greeting */}
             <div
               style={{
-                fontSize: 52,
+                fontSize: isMobile ? 38 : 52,
                 fontWeight: 800,
-                minHeight: 68,
+                minHeight: isMobile ? 52 : 68,
                 opacity: fade ? 1 : 0,
                 transform: fade ? "translateY(0)" : "translateY(-10px)",
                 transition: "opacity 0.28s ease, transform 0.28s ease",
@@ -89,7 +122,7 @@ export default function Hero({ darkMode }) {
             <div>
               <h1
                 style={{
-                  fontSize: 40,
+                  fontSize: isMobile ? 32 : 40,
                   fontWeight: 900,
                   letterSpacing: -1.5,
                   margin: 0,
@@ -110,9 +143,10 @@ export default function Hero({ darkMode }) {
                   Vivek Kumar
                 </span>
               </h1>
+
               <p
                 style={{
-                  fontSize: 18,
+                  fontSize: isMobile ? 15 : 18,
                   fontWeight: 500,
                   color: t ? "rgba(255,255,255,0.5)" : "rgba(0,0,0,0.48)",
                   margin: "8px 0 0",
@@ -128,7 +162,7 @@ export default function Hero({ darkMode }) {
                 fontSize: 15,
                 lineHeight: 1.75,
                 color: t ? "rgba(255,255,255,0.42)" : "rgba(0,0,0,0.48)",
-                maxWidth: 480,
+                maxWidth: isMobile ? "100%" : 480,
               }}
             >
               B.Tech CSE @ NIT Manipur '27 · Building elegant web applications
@@ -137,7 +171,14 @@ export default function Hero({ darkMode }) {
             </p>
 
             {/* CTA buttons */}
-            <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+            <div
+              style={{
+                display: "flex",
+                gap: 12,
+                flexWrap: "wrap",
+                flexDirection: isMobile ? "column" : "row",
+              }}
+            >
               <button
                 onClick={() =>
                   document
@@ -156,9 +197,11 @@ export default function Hero({ darkMode }) {
                   fontFamily: "inherit",
                   boxShadow: "0 8px 30px rgba(139,92,246,0.38)",
                   transition: "transform 0.2s, box-shadow 0.2s",
+                  width: isMobile ? "100%" : "auto",
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = "scale(1.04) translateY(-1px)";
+                  e.currentTarget.style.transform =
+                    "scale(1.04) translateY(-1px)";
                   e.currentTarget.style.boxShadow =
                     "0 14px 40px rgba(139,92,246,0.5)";
                 }}
@@ -171,6 +214,7 @@ export default function Hero({ darkMode }) {
                 View Projects →
               </button>
 
+              {/* ✅ FIXED RESUME LINK */}
               <a
                 href="/resume.pdf"
                 download="Vivek_Kumar_Resume.pdf"
@@ -186,12 +230,17 @@ export default function Hero({ darkMode }) {
                   textDecoration: "none",
                   background: "transparent",
                   transition: "transform 0.2s, background 0.2s",
-                  display: "inline-flex",
+                  display: "flex",
                   alignItems: "center",
+                  justifyContent: "center",
                   gap: 6,
+                  width: isMobile ? "100%" : "auto",
+                  boxSizing: "border-box",
+                  cursor: "pointer",
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = "scale(1.04) translateY(-1px)";
+                  e.currentTarget.style.transform =
+                    "scale(1.04) translateY(-1px)";
                   e.currentTarget.style.background = t
                     ? "rgba(255,255,255,0.07)"
                     : "rgba(0,0,0,0.04)";
@@ -206,16 +255,23 @@ export default function Hero({ darkMode }) {
             </div>
 
             {/* Stats */}
-            <div style={{ display: "flex", gap: 36, paddingTop: 4 }}>
+            <div
+              style={{
+                display: "flex",
+                gap: isMobile ? 28 : 36,
+                paddingTop: 4,
+                justifyContent: isMobile ? "space-between" : "flex-start",
+              }}
+            >
               {[
                 ["600+", "Problems Solved"],
                 ["1717", "LC Rating"],
                 ["Top 10%", "Globally"],
               ].map(([v, l]) => (
-                <div key={l}>
+                <div key={l} style={{ textAlign: isMobile ? "center" : "left" }}>
                   <div
                     style={{
-                      fontSize: 24,
+                      fontSize: isMobile ? 22 : 24,
                       fontWeight: 900,
                       color: t ? "#fff" : "#111",
                     }}
@@ -238,129 +294,146 @@ export default function Hero({ darkMode }) {
             </div>
           </div>
 
-          {/* Right — Photo */}
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              gap: 12,
-            }}
-          >
-            <div
-              style={{
-                borderRadius: 30,
-                padding: 4,
-                background: t
-                  ? "linear-gradient(135deg, rgba(139,92,246,0.45), rgba(99,102,241,0.45))"
-                  : "linear-gradient(135deg, rgba(139,92,246,0.22), rgba(99,102,241,0.22))",
-                boxShadow: t
-                  ? "0 24px 70px rgba(139,92,246,0.32)"
-                  : "0 24px 70px rgba(139,92,246,0.16)",
-                position: "relative",
-              }}
-            >
-              {/* Mac dots */}
-              <div
-                style={{
-                  position: "absolute",
-                  top: 13,
-                  left: 13,
-                  display: "flex",
-                  gap: 4,
-                  zIndex: 2,
-                }}
-              >
-                {["#ff5f56", "#ffbd2e", "#27c93f"].map((c) => (
-                  <div
-                    key={c}
-                    style={{
-                      width: 9,
-                      height: 9,
-                      borderRadius: "50%",
-                      background: c,
-                    }}
-                  />
-                ))}
-              </div>
-
-              {/* Image frame */}
-              <div
-                style={{
-                  width: 270,
-                  height: 350,
-                  borderRadius: 26,
-                  overflow: "hidden",
-                  display: "block",
-                }}
-              >
-                <img
-                  src={PHOTOS[photoIndex].img}
-                  alt="Vivek Kumar"
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "cover",
-                    objectPosition: "top center",
-                    opacity: photoFade ? 1 : 0,
-                    transform: photoFade ? "scale(1)" : "scale(1.04)",
-                    transition: "opacity 0.4s ease, transform 0.4s ease",
-                    display: "block",
-                  }}
-                />
-              </div>
-            </div>
-
-            {/* Label + indicator dots */}
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                gap: 8,
-              }}
-            >
-              <div
-                style={{
-                  fontSize: 11,
-                  padding: "5px 14px",
-                  borderRadius: 20,
-                  background: t
-                    ? "rgba(255,255,255,0.07)"
-                    : "rgba(0,0,0,0.06)",
-                  color: t
-                    ? "rgba(255,255,255,0.38)"
-                    : "rgba(0,0,0,0.38)",
-                  fontWeight: 600,
-                }}
-              >
-                {PHOTOS[photoIndex].label}
-              </div>
-
-              {/* Indicator dots */}
-              <div style={{ display: "flex", gap: 5 }}>
-                {PHOTOS.map((_, i) => (
-                  <div
-                    key={i}
-                    style={{
-                      width: i === photoIndex ? 18 : 5,
-                      height: 5,
-                      borderRadius: 3,
-                      background:
-                        i === photoIndex
-                          ? "linear-gradient(90deg, #8b5cf6, #6366f1)"
-                          : t
-                          ? "rgba(255,255,255,0.2)"
-                          : "rgba(0,0,0,0.15)",
-                      transition: "all 0.4s ease",
-                    }}
-                  />
-                ))}
-              </div>
-            </div>
-          </div>
+          {/* Photo (right on desktop) */}
+          {!isMobile && (
+            <PhotoBlock
+              photoIndex={photoIndex}
+              photoFade={photoFade}
+              t={t}
+              isMobile={isMobile}
+            />
+          )}
         </div>
       </div>
     </section>
+  );
+}
+
+// Photo block
+function PhotoBlock({ photoIndex, photoFade, t, isMobile }) {
+  const width =
+    typeof window !== "undefined"
+      ? isMobile
+        ? Math.min(window.innerWidth - 80, 270)
+        : 270
+      : 270;
+
+  return (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        gap: 12,
+        flexShrink: 0,
+      }}
+    >
+      <div
+        style={{
+          borderRadius: 30,
+          padding: 4,
+          background: t
+            ? "linear-gradient(135deg, rgba(139,92,246,0.45), rgba(99,102,241,0.45))"
+            : "linear-gradient(135deg, rgba(139,92,246,0.22), rgba(99,102,241,0.22))",
+          boxShadow: t
+            ? "0 24px 70px rgba(139,92,246,0.32)"
+            : "0 24px 70px rgba(139,92,246,0.16)",
+          position: "relative",
+        }}
+      >
+        {/* Mac dots */}
+        <div
+          style={{
+            position: "absolute",
+            top: 13,
+            left: 13,
+            display: "flex",
+            gap: 4,
+            zIndex: 2,
+          }}
+        >
+          {["#ff5f56", "#ffbd2e", "#27c93f"].map((c) => (
+            <div
+              key={c}
+              style={{
+                width: 9,
+                height: 9,
+                borderRadius: "50%",
+                background: c,
+              }}
+            />
+          ))}
+        </div>
+
+        {/* Image frame */}
+        <div
+          style={{
+            width,
+            height: isMobile ? 300 : 350,
+            borderRadius: 26,
+            overflow: "hidden",
+            display: "block",
+          }}
+        >
+          <img
+            src={PHOTOS[photoIndex].img}
+            alt="Vivek Kumar"
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              objectPosition: "top center",
+              opacity: photoFade ? 1 : 0,
+              transform: photoFade ? "scale(1)" : "scale(1.04)",
+              transition: "opacity 0.4s ease, transform 0.4s ease",
+              display: "block",
+            }}
+          />
+        </div>
+      </div>
+
+      {/* Label + dots */}
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: 8,
+        }}
+      >
+        <div
+          style={{
+            fontSize: 11,
+            padding: "5px 14px",
+            borderRadius: 20,
+            background: t ? "rgba(255,255,255,0.07)" : "rgba(0,0,0,0.06)",
+            color: t ? "rgba(255,255,255,0.38)" : "rgba(0,0,0,0.38)",
+            fontWeight: 600,
+          }}
+        >
+          {PHOTOS[photoIndex].label}
+        </div>
+
+        <div style={{ display: "flex", gap: 5 }}>
+          {PHOTOS.map((_, i) => (
+            <div
+              key={i}
+              style={{
+                width: i === photoIndex ? 18 : 5,
+                height: 5,
+                borderRadius: 3,
+                background:
+                  i === photoIndex
+                    ? "linear-gradient(90deg, #8b5cf6, #6366f1)"
+                    : t
+                    ? "rgba(255,255,255,0.2)"
+                    : "rgba(0,0,0,0.15)",
+                transition: "all 0.4s ease",
+              }}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
   );
 }
