@@ -2,8 +2,7 @@ import { useState, useEffect } from "react";
 
 export default function Navbar({ darkMode, setDarkMode }) {
   const [scrolled, setScrolled] = useState(false);
-  const [, setMenuOpen] = useState(false);
-
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 20);
@@ -28,7 +27,7 @@ export default function Navbar({ darkMode, setDarkMode }) {
         left: "50%",
         transform: "translateX(-50%)",
         width: scrolled ? "90%" : "95%",
-        maxWidth: 960,
+        maxWidth: "calc(100vw - 24px)",
         zIndex: 100,
         transition: "width 0.4s ease",
       }}
@@ -38,7 +37,7 @@ export default function Navbar({ darkMode, setDarkMode }) {
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          padding: "10px 20px",
+          padding: "10px 16px",
           borderRadius: 22,
           backdropFilter: "blur(24px)",
           WebkitBackdropFilter: "blur(24px)",
@@ -53,7 +52,7 @@ export default function Navbar({ darkMode, setDarkMode }) {
         }}
       >
         {/* Mac traffic lights + logo */}
-        <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
           <div style={{ display: "flex", gap: 5 }}>
             {["#ff5f56", "#ffbd2e", "#27c93f"].map((c) => (
               <div
@@ -64,44 +63,48 @@ export default function Navbar({ darkMode, setDarkMode }) {
                   borderRadius: "50%",
                   background: c,
                   cursor: "pointer",
-                  transition: "filter 0.2s",
+                  flexShrink: 0,
                 }}
-                onMouseEnter={(e) => (e.target.style.filter = "brightness(1.2)")}
-                onMouseLeave={(e) => (e.target.style.filter = "none")}
               />
             ))}
           </div>
           <span
             style={{
               fontWeight: 800,
-              fontSize: 14,
+              fontSize: 13,
               letterSpacing: "-0.5px",
               color: t ? "#fff" : "#111",
+              whiteSpace: "nowrap",
             }}
           >
             vivek.dev
           </span>
         </div>
 
-        {/* Nav links — desktop */}
+        {/* Nav links — hidden on mobile */}
         <div
-          style={{ display: "flex", gap: 2 }}
-          className="nav-links"
+          style={{
+            display: "flex",
+            gap: 2,
+            overflow: "hidden",
+          }}
         >
           {links.map((l) => (
             <button
               key={l}
               onClick={() => scrollTo(l)}
               style={{
-                padding: "7px 15px",
+                padding: "7px 10px",
                 borderRadius: 12,
                 border: "none",
                 cursor: "pointer",
-                fontSize: 13,
+                fontSize: 12,
                 fontWeight: 600,
                 background: "transparent",
                 color: t ? "rgba(255,255,255,0.65)" : "rgba(0,0,0,0.6)",
                 transition: "all 0.2s",
+                fontFamily: "inherit",
+                whiteSpace: "nowrap",
               }}
               onMouseEnter={(e) => {
                 e.target.style.background = t
@@ -125,22 +128,25 @@ export default function Navbar({ darkMode, setDarkMode }) {
         <button
           onClick={() => setDarkMode(!darkMode)}
           style={{
-            width: 36,
-            height: 36,
-            borderRadius: 12,
+            width: 34,
+            height: 34,
+            borderRadius: 11,
             border: "none",
             cursor: "pointer",
-            fontSize: 17,
+            fontSize: 16,
             background: t ? "rgba(255,255,255,0.09)" : "rgba(0,0,0,0.07)",
             transition: "all 0.2s",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
+            flexShrink: 0,
           }}
           onMouseEnter={(e) =>
             (e.currentTarget.style.transform = "scale(1.12)")
           }
-          onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
+          onMouseLeave={(e) =>
+            (e.currentTarget.style.transform = "scale(1)")
+          }
           aria-label="Toggle dark mode"
         >
           {darkMode ? "☀️" : "🌙"}

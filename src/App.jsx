@@ -18,6 +18,7 @@ export default function App() {
           "'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
         position: "relative",
         transition: "background 0.5s ease, color 0.5s ease",
+        overflowX: "hidden",
       }}
     >
       {/* Noise texture overlay */}
@@ -37,15 +38,16 @@ export default function App() {
       {!splashDone && <GreetingSplash onDone={() => setSplashDone(true)} />}
 
       {/* Main content — fades in after splash */}
-      <div style={{
-        opacity: splashDone ? 1 : 0,
-        transition: "opacity 0.6s ease 0.2s",
-        pointerEvents: splashDone ? "all" : "none",
-      }}>
+      <div
+        style={{
+          opacity: splashDone ? 1 : 0,
+          transition: "opacity 0.6s ease 0.2s",
+          pointerEvents: splashDone ? "all" : "none",
+        }}
+      >
         <Navbar darkMode={darkMode} setDarkMode={setDarkMode} />
         <Home darkMode={darkMode} setDarkMode={setDarkMode} />
       </div>
-
     </div>
   );
 }

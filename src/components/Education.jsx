@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { NIT_LOGO } from "../assets/images";
 import FadeIn from "./FadeIn";
 
@@ -23,11 +24,21 @@ const ACHIEVEMENTS = [
 ];
 
 export default function Education({ darkMode }) {
+  const [isMobile, setIsMobile] = useState(() =>
+    typeof window !== "undefined" ? window.innerWidth < 768 : false
+  );
+
   const t = darkMode;
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const cardStyle = {
     borderRadius: 30,
-    padding: 30,
+    padding: isMobile ? 20 : 30,
     backdropFilter: "blur(20px)",
     WebkitBackdropFilter: "blur(20px)",
     background: t ? "rgba(255,255,255,0.04)" : "rgba(255,255,255,0.88)",
@@ -37,14 +48,21 @@ export default function Education({ darkMode }) {
     boxShadow: t
       ? "0 8px 40px rgba(0,0,0,0.4)"
       : "0 8px 40px rgba(0,0,0,0.07)",
-    height: "100%",
+    width: "100%",
+    boxSizing: "border-box",
   };
 
   return (
-    <section id="education" style={{ padding: "90px 24px" }}>
-      <div style={{ maxWidth: 1060, margin: "0 auto" }}>
+    <section
+      id="education"
+      style={{
+        padding: isMobile ? "60px 16px" : "90px 24px",
+        overflowX: "hidden",
+      }}
+    >
+      <div style={{ maxWidth: 1060, margin: "0 auto", width: "100%" }}>
         <FadeIn>
-          <div style={{ textAlign: "center", marginBottom: 52 }}>
+          <div style={{ textAlign: "center", marginBottom: isMobile ? 36 : 52 }}>
             <span
               style={{
                 fontSize: 11,
@@ -61,9 +79,10 @@ export default function Education({ darkMode }) {
             >
               Background
             </span>
+
             <h2
               style={{
-                fontSize: 38,
+                fontSize: isMobile ? 28 : 38,
                 fontWeight: 900,
                 margin: "14px 0 0",
                 letterSpacing: -1,
@@ -75,22 +94,24 @@ export default function Education({ darkMode }) {
           </div>
         </FadeIn>
 
+        {/* Grid */}
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "1fr 1fr",
+            gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
             gap: 24,
             alignItems: "start",
+            width: "100%",
           }}
         >
-          {/* Education card */}
+          {/* ── Education card ── */}
           <FadeIn delay={0}>
             <div style={cardStyle}>
               <h3
                 style={{
                   fontSize: 16,
                   fontWeight: 800,
-                  margin: "0 0 28px",
+                  margin: "0 0 24px",
                   color: t ? "#fff" : "#111",
                 }}
               >
@@ -101,11 +122,11 @@ export default function Education({ darkMode }) {
               <div
                 style={{
                   position: "relative",
-                  paddingLeft: 26,
+                  paddingLeft: 24,
                   borderLeft: "2px solid rgba(139,92,246,0.28)",
                 }}
               >
-                {/* Dot 1 */}
+                {/* NIT Dot */}
                 <div
                   style={{
                     position: "absolute",
@@ -116,16 +137,18 @@ export default function Education({ darkMode }) {
                     borderRadius: "50%",
                     background: "#8b5cf6",
                     boxShadow: "0 0 0 4px rgba(139,92,246,0.22)",
+                    flexShrink: 0,
                   }}
                 />
 
-                <div style={{ marginBottom: 32 }}>
+                <div style={{ marginBottom: 28 }}>
                   <div
                     style={{
                       display: "flex",
                       alignItems: "center",
-                      gap: 12,
+                      gap: 10,
                       marginBottom: 10,
+                      flexWrap: "wrap",
                     }}
                   >
                     <img
@@ -138,8 +161,10 @@ export default function Education({ darkMode }) {
                         objectFit: "contain",
                         background: "white",
                         padding: 3,
+                        flexShrink: 0,
                       }}
                     />
+
                     <div>
                       <div
                         style={{
@@ -162,6 +187,7 @@ export default function Education({ darkMode }) {
                       </div>
                     </div>
                   </div>
+
                   <div
                     style={{
                       fontSize: 13,
@@ -171,6 +197,7 @@ export default function Education({ darkMode }) {
                   >
                     B.Tech in Computer Science & Engineering
                   </div>
+
                   <div
                     style={{
                       fontSize: 12,
@@ -184,12 +211,12 @@ export default function Education({ darkMode }) {
                   </div>
                 </div>
 
-                {/* Dot 2 */}
+                {/* XII Dot */}
                 <div
                   style={{
                     position: "absolute",
                     left: -9,
-                    top: 145,
+                    top: 148,
                     width: 16,
                     height: 16,
                     borderRadius: "50%",
@@ -197,7 +224,8 @@ export default function Education({ darkMode }) {
                     boxShadow: "0 0 0 4px rgba(99,102,241,0.22)",
                   }}
                 />
-                <div>
+
+                <div style={{ paddingTop: 8 }}>
                   <div
                     style={{
                       fontWeight: 800,
@@ -224,7 +252,7 @@ export default function Education({ darkMode }) {
               {/* Experience */}
               <div
                 style={{
-                  marginTop: 30,
+                  marginTop: 28,
                   paddingTop: 22,
                   borderTop: t
                     ? "1px solid rgba(255,255,255,0.07)"
@@ -241,10 +269,11 @@ export default function Education({ darkMode }) {
                 >
                   💼 Experience
                 </h4>
+
                 <div
                   style={{
                     borderRadius: 18,
-                    padding: 17,
+                    padding: 16,
                     background: t
                       ? "rgba(255,255,255,0.05)"
                       : "rgba(0,0,0,0.03)",
@@ -262,6 +291,7 @@ export default function Education({ darkMode }) {
                   >
                     Edunet Foundation
                   </div>
+
                   <div
                     style={{
                       fontSize: 12,
@@ -273,6 +303,7 @@ export default function Education({ darkMode }) {
                   >
                     AICTE IBM SkillsBuild · AI & Cloud Intern
                   </div>
+
                   <div
                     style={{
                       fontSize: 12,
@@ -283,6 +314,7 @@ export default function Education({ darkMode }) {
                   >
                     Jul 2025 – Aug 2025
                   </div>
+
                   <p
                     style={{
                       fontSize: 12,
@@ -301,7 +333,7 @@ export default function Education({ darkMode }) {
             </div>
           </FadeIn>
 
-          {/* Achievements card */}
+          {/* ── Achievements card ── */}
           <FadeIn delay={0.12}>
             <div style={cardStyle}>
               <h3
@@ -322,8 +354,8 @@ export default function Education({ darkMode }) {
                       style={{
                         display: "flex",
                         alignItems: "flex-start",
-                        gap: 14,
-                        padding: "15px 17px",
+                        gap: 12,
+                        padding: "14px 16px",
                         borderRadius: 20,
                         background: t
                           ? "rgba(255,255,255,0.05)"
@@ -331,22 +363,21 @@ export default function Education({ darkMode }) {
                         border: t
                           ? "1px solid rgba(255,255,255,0.06)"
                           : "1px solid rgba(0,0,0,0.05)",
-                        transition: "transform 0.2s, box-shadow 0.2s",
+                        transition: "transform 0.2s",
                         cursor: "default",
+                        width: "100%",
+                        boxSizing: "border-box",
                       }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.transform = "scale(1.02)";
-                        e.currentTarget.style.boxShadow = t
-                          ? "0 8px 30px rgba(0,0,0,0.3)"
-                          : "0 8px 30px rgba(0,0,0,0.08)";
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.transform = "scale(1)";
-                        e.currentTarget.style.boxShadow = "none";
-                      }}
+                      onMouseEnter={(e) =>
+                        (e.currentTarget.style.transform = "scale(1.02)")
+                      }
+                      onMouseLeave={(e) =>
+                        (e.currentTarget.style.transform = "scale(1)")
+                      }
                     >
-                      <div style={{ fontSize: 30 }}>{a.icon}</div>
-                      <div style={{ flex: 1 }}>
+                      <div style={{ fontSize: 28, flexShrink: 0 }}>{a.icon}</div>
+
+                      <div style={{ flex: 1, minWidth: 0 }}>
                         <div
                           style={{
                             fontWeight: 800,
@@ -363,11 +394,13 @@ export default function Education({ darkMode }) {
                             color: t
                               ? "rgba(255,255,255,0.44)"
                               : "rgba(0,0,0,0.5)",
+                            wordBreak: "break-word",
                           }}
                         >
                           {a.desc}
                         </div>
                       </div>
+
                       <span
                         style={{
                           fontSize: 11,
@@ -379,6 +412,7 @@ export default function Education({ darkMode }) {
                             : "rgba(139,92,246,0.1)",
                           color: t ? "#c4b5fd" : "#7c3aed",
                           whiteSpace: "nowrap",
+                          flexShrink: 0,
                         }}
                       >
                         {a.year}
@@ -398,28 +432,33 @@ export default function Education({ darkMode }) {
                     : "1px solid rgba(0,0,0,0.06)",
                 }}
               >
+                {/* ✅ FIXED <a> TAG */}
                 <a
-                  href="https://leetcode.com/u/patelvivek8874/"
+                  href="https://leetcode.com/u/vivek8874151688/"
                   target="_blank"
                   rel="noreferrer"
                   style={{
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "space-between",
-                    padding: "17px 20px",
+                    padding: "16px 18px",
                     borderRadius: 20,
                     textDecoration: "none",
                     background:
                       "linear-gradient(135deg, rgba(245,158,11,0.11), rgba(251,191,36,0.11))",
                     border: "1px solid rgba(245,158,11,0.22)",
                     transition: "border-color 0.2s, transform 0.2s",
+                    boxSizing: "border-box",
+                    width: "100%",
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.borderColor = "rgba(245,158,11,0.45)";
+                    e.currentTarget.style.borderColor =
+                      "rgba(245,158,11,0.45)";
                     e.currentTarget.style.transform = "scale(1.01)";
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.borderColor = "rgba(245,158,11,0.22)";
+                    e.currentTarget.style.borderColor =
+                      "rgba(245,158,11,0.22)";
                     e.currentTarget.style.transform = "scale(1)";
                   }}
                 >
@@ -433,6 +472,7 @@ export default function Education({ darkMode }) {
                     >
                       LeetCode Profile
                     </div>
+
                     <div
                       style={{
                         fontSize: 12,
@@ -444,11 +484,13 @@ export default function Education({ darkMode }) {
                       Rating 1717 · Top 10% Globally
                     </div>
                   </div>
+
                   <span
                     style={{
                       color: "#f59e0b",
                       fontWeight: 800,
                       fontSize: 18,
+                      flexShrink: 0,
                     }}
                   >
                     →
