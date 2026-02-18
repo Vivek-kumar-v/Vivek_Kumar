@@ -165,7 +165,7 @@ function ProjectCard({ p, darkMode, delay }) {
             )}
             {p.source && (
               <a
-                href={p.source}
+                href={'https://github.com/Vivek-kumar-v/RNN-Review_Analysis'}
                 target="_blank"
                 rel="noreferrer"
                 style={{
