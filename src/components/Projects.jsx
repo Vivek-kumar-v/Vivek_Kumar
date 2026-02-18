@@ -29,20 +29,20 @@ function ProjectCard({ p, darkMode, delay }) {
             ? "scale(1.018) translateY(-5px)"
             : "scale(1) translateY(0)",
           transition: "all 0.3s cubic-bezier(0.4,0,0.2,1)",
-          cursor: "pointer",
         }}
       >
-        {/* Gradient background */}
+        {/* Gradient background (FIXED) */}
         <div
           style={{
             position: "absolute",
             inset: 0,
             background: p.gradient,
             borderRadius: 28,
+            pointerEvents: "none", // ✅ IMPORTANT
           }}
         />
 
-        <div style={{ position: "relative", zIndex: 1 }}>
+        <div style={{ position: "relative", zIndex: 2 }}>
           {/* Header */}
           <div
             style={{
@@ -148,7 +148,6 @@ function ProjectCard({ p, darkMode, delay }) {
                   textAlign: "center",
                   padding: "11px",
                   borderRadius: 15,
-                  border: "none",
                   cursor: "pointer",
                   background: `linear-gradient(135deg, ${p.accent}, ${p.accent}cc)`,
                   color: "#fff",
@@ -191,6 +190,7 @@ function ProjectCard({ p, darkMode, delay }) {
                   alignItems: "center",
                   justifyContent: "center",
                   transition: "background 0.2s",
+                  cursor: "pointer",
                 }}
                 onMouseEnter={(e) =>
                   (e.currentTarget.style.background = t
