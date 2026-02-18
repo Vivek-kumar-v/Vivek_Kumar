@@ -6,12 +6,14 @@ import GreetingSplash from "./components/GreetingSplash";
 
 export default function App() {
   const [darkMode, setDarkMode] = useState(true);
-  const [, setSplashDone] = useState(false);
+
+  // ✅ FIX: you MUST store splashDone value also
+  const [splashDone, setSplashDone] = useState(false);
 
   return (
     <div
       style={{
-        minHeight: "100vh",
+        minHeight: "100svh",
         background: darkMode ? "#0a0a14" : "#f8f8fc",
         color: darkMode ? "#fff" : "#0a0a14",
         fontFamily:
@@ -35,11 +37,15 @@ export default function App() {
       />
 
       {/* Splash screen */}
-      {!splashDone && <GreetingSplash onDone={() => setSplashDone(true)} />}
+      {!splashDone && (
+        <GreetingSplash onDone={() => setSplashDone(true)} />
+      )}
 
       {/* Main content — fades in after splash */}
       <div
         style={{
+          position: "relative",
+          zIndex: 1,
           opacity: splashDone ? 1 : 0,
           transition: "opacity 0.6s ease 0.2s",
           pointerEvents: splashDone ? "all" : "none",
