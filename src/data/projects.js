@@ -1,5 +1,18 @@
 export const PROJECTS = [
   {
+    title: "ConceptVault",
+    subtitle: "AI Powered Notes + OCR + Smart Search Platform",
+    description:
+      "A smart learning platform where students can upload Notes/PYQs, extract text using OCR, get AI explanations, track weak concepts, and revise smarter with analytics.",
+    tech: ["MongoDB", "Express.js", "React.js", "Node.js", "OCR", "AI", "MERN"],
+    live: "https://al-driven-lms.vercel.app/",
+    source: "https://github.com/Vivek-kumar-v/AL_based_LMS",
+    gradient:
+      "linear-gradient(135deg, rgba(59,130,246,0.15), rgba(99,102,241,0.15))",
+    accent: "#3b82f6",
+    icon: "📚",
+  },
+  {
     title: "FoodSync",
     subtitle: "Food Waste Management Platform",
     description:

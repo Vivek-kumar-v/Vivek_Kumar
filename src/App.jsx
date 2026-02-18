@@ -3,6 +3,8 @@ import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import "./index.css";
 import GreetingSplash from "./components/GreetingSplash";
+import Cursor from "./components/Cursor";
+
 
 export default function App() {
   const [darkMode, setDarkMode] = useState(true);
@@ -51,6 +53,7 @@ export default function App() {
           pointerEvents: splashDone ? "all" : "none",
         }}
       >
+        <Cursor darkMode={darkMode} />
         <Navbar darkMode={darkMode} setDarkMode={setDarkMode} />
         <Home darkMode={darkMode} setDarkMode={setDarkMode} />
       </div>
