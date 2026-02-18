@@ -6,7 +6,7 @@ import GreetingSplash from "./components/GreetingSplash";
 
 export default function App() {
   const [darkMode, setDarkMode] = useState(true);
-  const [splashDone, setSplashDone] = useState(false);
+  const [, setSplashDone] = useState(false);
 
   return (
     <div
