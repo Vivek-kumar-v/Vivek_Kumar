@@ -1,8 +1,8 @@
 const LINKS = [
   { label: "✉️ Email", href: "mailto:patelvivek8874@gmail.com" },
-  { label: "💼 LinkedIn", href: "https://linkedin.com/in/vivek-kumar" },
-  { label: "🐙 GitHub", href: "https://github.com/vivek-kumar" },
-  { label: "⚡ LeetCode", href: "https://leetcode.com/u/patelvivek8874/" },
+  { label: "💼 LinkedIn", href: "https://www.linkedin.com/in/vivek-kumar-b52882290/" },
+  { label: "🐙 GitHub", href: "https://github.com/Vivek-kumar-v" },
+  { label: "⚡ LeetCode", href: "https://leetcode.com/u/vivek8874151688/" },
 ];
 
 export default function Footer({ darkMode }) {

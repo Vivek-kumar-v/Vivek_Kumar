@@ -25,7 +25,9 @@ function ProjectCard({ p, darkMode, delay }) {
             : t
             ? "0 4px 24px rgba(0,0,0,0.32)"
             : "0 4px 24px rgba(0,0,0,0.07)",
-          transform: hov ? "scale(1.018) translateY(-5px)" : "scale(1) translateY(0)",
+          transform: hov
+            ? "scale(1.018) translateY(-5px)"
+            : "scale(1) translateY(0)",
           transition: "all 0.3s cubic-bezier(0.4,0,0.2,1)",
           cursor: "pointer",
         }}
@@ -72,6 +74,7 @@ function ProjectCard({ p, darkMode, delay }) {
                 {p.subtitle}
               </p>
             </div>
+
             <div
               style={{
                 width: 40,
@@ -157,15 +160,18 @@ function ProjectCard({ p, darkMode, delay }) {
                   justifyContent: "center",
                   transition: "opacity 0.2s",
                 }}
-                onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.88")}
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.opacity = "0.88")
+                }
                 onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
               >
                 Live App ↗
               </a>
             )}
+
             {p.source && (
               <a
-                href={'https://github.com/Vivek-kumar-v/RNN-Review_Analysis'}
+                href={p.source}
                 target="_blank"
                 rel="noreferrer"
                 style={{
@@ -173,6 +179,7 @@ function ProjectCard({ p, darkMode, delay }) {
                   textAlign: "center",
                   padding: "11px",
                   borderRadius: 15,
+                  background: "transparent",
                   border: t
                     ? "1.5px solid rgba(255,255,255,0.13)"
                     : "1.5px solid rgba(0,0,0,0.1)",
@@ -228,6 +235,7 @@ export default function Projects({ darkMode }) {
             >
               Projects
             </span>
+
             <h2
               style={{
                 fontSize: 38,
